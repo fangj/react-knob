@@ -33,6 +33,7 @@ export default class Knob extends React.Component {
     fColor:React.PropTypes.string,//前景色
     text:React.PropTypes.string,
     onChange:React.PropTypes.func,
+    render:React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -52,18 +53,24 @@ export default class Knob extends React.Component {
   }
 
   render() {
-    const {R,strokeWidth}=this.props;
+    const {R,strokeWidth,render}=this.props;
     const {degree,c}=this.state;
     const arcBack=describeArc(c, c, R, 0, 359.9);
     const arcFore=describeArc(c, c, R, 0, degree);
-    const text=this.props.text||degree;
+    var text;
+    if(typeof render=='function'){
+      text=render(degree,c);
+    }else{
+      var txt=this.props.text||degree;
+      text=<text x={c} y={c} fill="#87CEEB" fontSize="60" textAnchor="middle" alignmentBaseline="central" fontFamily="Arial" >
+        {txt}
+    </text>
+    }
     return (
       <svg style={{width:"100%",height:"100%"}} ref="svg">
       <path fill="none" stroke="#EEEEEE" strokeWidth={strokeWidth} d={arcBack} onClick={this.onChange}></path>
       <path  fill="none" stroke="#87CEEB" strokeWidth={strokeWidth} d={arcFore} onClick={this.onChange}></path>
-      <text x={c} y={c} fill="#87CEEB" fontSize="60" textAnchor="middle" alignmentBaseline="central" fontFamily="Arial" >
-        {degree}
-    </text>
+      {text}
   </svg>
     );
   }
@@ -85,10 +92,16 @@ export default class Knob extends React.Component {
       degree+=360;
     }
     console.log(degree);
-    this.setState({degree})
     if(typeof this.props.onChange =="function"){
       this.props.onChange(degree)
+    }else{
+      this.setState({degree})
     }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {degree}=nextProps;
+    this.setState({degree})
   }
 
 }
