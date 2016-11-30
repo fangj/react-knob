@@ -16,5 +16,10 @@ storiesOf('Button', module)
 import  Knob  from "../components/knob";
 storiesOf('Knob', module)
   .add('Knob', () => (
-    <Knob degree={100}/>
+    <Knob degree={100} onChange={(degree)=>toastr.info(degree)}/>
+  ))
+  .add('Knob with offset', () => (
+    <div style={{height:"3000px"}}>
+    <div style={{height:"2000px"}}/>
+    <Knob degree={100}/></div>
   ))

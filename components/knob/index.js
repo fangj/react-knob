@@ -32,6 +32,7 @@ export default class Knob extends React.Component {
     bColor:React.PropTypes.string,//背景色
     fColor:React.PropTypes.string,//前景色
     text:React.PropTypes.string,
+    onChange:React.PropTypes.func,
   };
 
   static defaultProps = {
@@ -44,24 +45,50 @@ export default class Knob extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state={degree:props.degree}
+    const {R,strokeWidth,degree}=this.props;
+    const c=R+strokeWidth/2;//中心位置
+    this.state={degree,c};
+    this.onChange=this.onChange.bind(this);
   }
 
   render() {
     const {R,strokeWidth}=this.props;
-    const {degree}=this.state;
-    const c=R+strokeWidth/2;//中心位置
+    const {degree,c}=this.state;
     const arcBack=describeArc(c, c, R, 0, 359.9);
     const arcFore=describeArc(c, c, R, 0, degree);
     const text=this.props.text||degree;
     return (
-      <svg style={{width:"100%",height:"100%"}}>
-      <path fill="none" stroke="#EEEEEE" strokeWidth={strokeWidth} d={arcBack} ></path>
-      <path  fill="none" stroke="#87CEEB" strokeWidth={strokeWidth} d={arcFore}></path>
+      <svg style={{width:"100%",height:"100%"}} ref="svg">
+      <path fill="none" stroke="#EEEEEE" strokeWidth={strokeWidth} d={arcBack} onClick={this.onChange}></path>
+      <path  fill="none" stroke="#87CEEB" strokeWidth={strokeWidth} d={arcFore} onClick={this.onChange}></path>
       <text x={c} y={c} fill="#87CEEB" fontSize="60" textAnchor="middle" alignmentBaseline="central" fontFamily="Arial" >
         {degree}
     </text>
   </svg>
     );
   }
+
+  onChange(e){
+    // console.log(e.pageX,e.pageY)
+    var el=this.refs.svg;
+    var offset = $(el).offset(); 
+    var x=e.pageX-offset.left;
+    var y=e.pageY-offset.top;
+    // console.log(x,y);
+    const {c}=this.state;
+    var dx=x-c;
+    var dy=c-y;
+    console.log(dx,dy)
+    var hudu=Math.atan2(dx,dy);
+    var degree=Math.round(hudu*180.0/Math.PI);
+    if(degree<0){
+      degree+=360;
+    }
+    console.log(degree);
+    this.setState({degree})
+    if(typeof this.props.onChange =="function"){
+      this.props.onChange(degree)
+    }
+  }
+
 }
