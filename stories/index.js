@@ -12,3 +12,9 @@ storiesOf('Button', module)
   .add('with pubsub', () => (
     <button onClick={()=>PubSub.publish('msg.error','something wrong')}>😀 😎 👍 💯</button>
   ));
+
+import  Knob  from "../components/knob";
+storiesOf('Knob', module)
+  .add('Knob', () => (
+    <Knob degree={100}/>
+  ))
