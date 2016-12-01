@@ -26,7 +26,7 @@ function describeArc(x, y, radius, startAngle, endAngle){
 
 export default class Knob extends React.Component {
   static propTypes = {
-    degree: React.PropTypes.number,
+    value: React.PropTypes.number,
     R: React.PropTypes.number, //半径
     strokeWidth:React.PropTypes.number,//粗细
     bColor:React.PropTypes.string,//背景色
@@ -37,7 +37,7 @@ export default class Knob extends React.Component {
   };
 
   static defaultProps = {
-    degree: 50,
+    value: 50,
     R: 100, //半径
     strokeWidth:30,
     bColor:"#EEEEEE",
@@ -46,20 +46,21 @@ export default class Knob extends React.Component {
 
   constructor(props) {
     super(props);
-    const {R,strokeWidth,degree}=this.props;
+    const {R,strokeWidth,value}=this.props;
     const c=R+strokeWidth/2;//中心位置
-    this.state={degree,c};
+    this.state={value,c};
     this.onChange=this.onChange.bind(this);
   }
 
   render() {
     const {R,strokeWidth,render}=this.props;
-    const {degree,c}=this.state;
+    const {value,c}=this.state;
+    const degree=value*359.9;
     const arcBack=describeArc(c, c, R, 0, 359.9);
     const arcFore=describeArc(c, c, R, 0, degree);
     var text;
     if(typeof render=='function'){
-      text=render(degree,c);
+      text=render(value,c);
     }else{
       var txt=this.props.text||degree;
       text=<text x={c} y={c} fill="#87CEEB" fontSize="60" textAnchor="middle" alignmentBaseline="central" fontFamily="Arial" >
@@ -92,16 +93,17 @@ export default class Knob extends React.Component {
       degree+=360;
     }
     console.log(degree);
+    const value=degree/360.0;
     if(typeof this.props.onChange =="function"){
-      this.props.onChange(degree)
+      this.props.onChange(value)
     }else{
-      this.setState({degree})
+      this.setState({value})
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    const {degree}=nextProps;
-    this.setState({degree})
+    const {value}=nextProps;
+    this.setState({value})
   }
 
 }

@@ -1,8 +1,8 @@
 import React from 'react';
 import  Knob  from "../knob";
 
-function render(degree,c){
-  const level=Math.round(degree/30)
+function render(value,c){
+  const level=Math.round(value/0.1)
  return <text x={c} y={c} fill="lightblue" fontSize="30" textAnchor="middle" alignmentBaseline="central" fontFamily="Arial" >{level}档
     </text>
 }
@@ -15,22 +15,20 @@ export default class ControlledKnob extends React.Component {
   constructor(props) {
     super(props);
     this.onChange=this.onChange.bind(this);
-    this.state={degree:100};
+    this.state={value:0.1};
   }
 
   render() {
-    const {degree}=this.state;
+    const {value}=this.state;
     return (
-     <Knob degree={degree} onChange={this.onChange} render={render}/>
+     <Knob value={value} onChange={this.onChange} render={render}/>
     );
   }
 
-  onChange(degree){
-    const level=Math.round(degree/30)
-    degree=level*30;
-    if(degree==360){
-      degree=359.9;
-    }
-    this.setState({degree});
+  onChange(value){
+    const step=0.1
+    const level=Math.round(value/step)
+    value=level*step;
+    this.setState({value});
   }
 }
