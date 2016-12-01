@@ -34,6 +34,8 @@ export default class Knob extends React.Component {
     text:React.PropTypes.string,
     onChange:React.PropTypes.func,
     render:React.PropTypes.func,
+    from: React.PropTypes.number, //起始角度
+    to: React.PropTypes.number, //结束角度
   };
 
   static defaultProps = {
@@ -42,6 +44,8 @@ export default class Knob extends React.Component {
     strokeWidth:30,
     bColor:"#EEEEEE",
     fColor:"#87CEEB",
+    from:0,
+    to:359.9
   }
 
   constructor(props) {
@@ -53,16 +57,17 @@ export default class Knob extends React.Component {
   }
 
   render() {
-    const {R,strokeWidth,render}=this.props;
+    const {R,strokeWidth,render,from,to}=this.props;
     const {value,c}=this.state;
-    const degree=value*359.9;
-    const arcBack=describeArc(c, c, R, 0, 359.9);
-    const arcFore=describeArc(c, c, R, 0, degree);
+    const range=to-from;
+    const degree=Math.round(value*range);
+    const arcBack=describeArc(c, c, R, from, to);
+    const arcFore=describeArc(c, c, R, from, from+degree);
     var text;
     if(typeof render=='function'){
       text=render(value,c);
     }else{
-      var txt=this.props.text||degree;
+      var txt=this.props.text||value.toPrecision(2);
       text=<text x={c} y={c} fill="#87CEEB" fontSize="60" textAnchor="middle" alignmentBaseline="central" fontFamily="Arial" >
         {txt}
     </text>
@@ -88,12 +93,14 @@ export default class Knob extends React.Component {
     var dy=c-y;
     console.log(dx,dy)
     var hudu=Math.atan2(dx,dy);
-    var degree=Math.round(hudu*180.0/Math.PI);
+    const {from,to}=this.props;
+    const range=to-from;
+    var degree=Math.round(hudu*180.0/Math.PI)-from;
     if(degree<0){
       degree+=360;
     }
     console.log(degree);
-    const value=degree/360.0;
+    const value=degree/range;
     if(typeof this.props.onChange =="function"){
       this.props.onChange(value)
     }else{

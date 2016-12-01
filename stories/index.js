@@ -26,6 +26,9 @@ storiesOf('Knob', module)
   .add('Knob', () => (
     <Knob value={0.2}/>
   ))
+  .add('Knob range', () => (
+    <Knob value={0.2} from={-150} to={150}/>
+  ))
   .add('Knob with render', () => (
     <Knob value={0.3} render={render}/>
   ))
