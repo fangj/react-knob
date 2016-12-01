@@ -45,13 +45,11 @@ storiesOf('Knob', module)
   ));
 
 import  Wave  from "../components/wave/view.js";
-import X from "../components/wave/x.js";
 var data= require('./mock_wave_data');
 storiesOf('Wave', module)
   .add('Wave', () => (
+    <div style={{width:2000,height:1000,padding:20,backgroundColor:"#DFE0DD"}}>
     <Wave data={data}/>
-  ))
-  .add('X', () => (
-    <X />
+    </div>
   ))
 

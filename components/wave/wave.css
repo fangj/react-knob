@@ -1,6 +1,13 @@
-.wave{
-  border-width: 1px;
-  border-style: dashed;
-  width: 500px;
-  height: 400px;
+
+
+.wave {
+  display: inline-block;
+  background-color: #00C5B6; /* #02a99c; */
+  background-image: radial-gradient(#00C5B6, #00A984);
+  border-radius: 8px;
+  border: 8px inset #f4f4f4;
+  -webkit-box-shadow: inset 6px 5px 55px 1px rgba(0,0,0,0.8);
+  -moz-box-shadow: inset 6px 5px 55px 1px rgba(0,0,0,0.8);
+  box-shadow: inset 6px 5px 55px 1px rgba(0,0,0,0.8);
+  margin: 0 20px 20px 0;
 }

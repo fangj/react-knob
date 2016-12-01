@@ -2,7 +2,7 @@ import React from 'react';
 require ('./wave.css');
 // var LineChart = require('react-d3-basic').LineChart;
 import LineChart  from './line.js';
-
+var _=require('lodash');
 
 export default class WaveView extends React.Component {
   static propTypes = {
@@ -14,23 +14,23 @@ export default class WaveView extends React.Component {
   }
 
   render() {
-    var width = 500,
+    var width = 600,
     height = 400,
-    margins = {left: 5, right: 5, top: 5, bottom: 5},
+    margins = {left: 10, right: 10, top: 10, bottom: 10},
     title="示波器";
     const {data}=this.props;
     const chart1={
         field: 'c1',
         name: 'ch1',
-        color: '#ff7f0e'
+        color: '#42ff4f'
       };
     const x = function(d) {
       return d.idx;
     };
     var wavedata=data.map((c1,idx)=>({c1,idx}));
     var chartSeries=[chart1];
-    var xTickValues=_.range(0,1401,140);
-    var yTickValues=_.range(0,257,32);
+    var xTickValues=_.range(0,1401,100); //横向100点一格
+    var yTickValues=_.range(0,257,32); //纵向一共8格
 
     return (
       <div className='wave'>
