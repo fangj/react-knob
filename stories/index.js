@@ -42,5 +42,16 @@ storiesOf('Knob', module)
   ))
   .add('ControlledKnob2', () => (
     <ControlledKnob2 />
+  ));
+
+import  Wave  from "../components/wave/view.js";
+import X from "../components/wave/x.js";
+var data= require('./mock_wave_data');
+storiesOf('Wave', module)
+  .add('Wave', () => (
+    <Wave data={data}/>
+  ))
+  .add('X', () => (
+    <X />
   ))
 
